@@ -136,6 +136,5 @@ Q = vec3(x, y, 0)
 color = raytrace(E, (Q - E).norm(), scene)
 print "Took", time.time() - t0
 
-import Image
 rgb = [Image.fromarray((255 * np.clip(c, 0, 1).reshape((h, w))).astype(np.uint8), "L") for c in color.components()]
 Image.merge("RGB", rgb).save("fig.png")

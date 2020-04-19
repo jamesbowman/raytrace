@@ -1,6 +1,7 @@
+from PIL import Image
+from functools import reduce
 import numpy as np
 import time
-import Image
 
 class vec3():
     def __init__(self, x, y, z):
@@ -118,7 +119,7 @@ y = np.repeat(np.linspace(S[1], S[3], h), w)
 t0 = time.time()
 Q = vec3(x, y, 1)
 color = raytrace(E, (Q - E).norm(), scene)
-print "Took", time.time() - t0
+print ("Took", time.time() - t0)
 
 rgb = [Image.fromarray((255 * np.clip(c, 0, 1).reshape((h, w))).astype(np.uint8), "L") for c in color.components()]
 Image.merge("RGB", rgb).save("fig.png")

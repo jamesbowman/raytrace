@@ -1,4 +1,5 @@
-import Image
+from PIL import Image
+from functools import reduce
 import numpy as np
 import time
 import numbers
@@ -40,8 +41,8 @@ class vec3():
 rgb = vec3
 
 (w, h) = (400, 300)         # Screen size
-L = vec3(5, 5., -10)        # Point light position
-E = vec3(0., 0.35, -1.)     # Eye position
+L = vec3(5, 5, -10)        # Point light position
+E = vec3(0, 0.35, -1)     # Eye position
 FARAWAY = 1.0e39            # an implausibly huge distance
 
 def raytrace(O, D, scene, bounce = 0):
@@ -119,22 +120,22 @@ class CheckeredSphere(Sphere):
         return self.diffuse * checker
 
 scene = [
-    Sphere(vec3(.75, .1, 1.), .6, rgb(0, 0, 1)),
+    Sphere(vec3(.75, .1, 1), .6, rgb(0, 0, 1)),
     Sphere(vec3(-.75, .1, 2.25), .6, rgb(.5, .223, .5)),
-    Sphere(vec3(-2.75, .1, 3.5), .6, rgb(1., .572, .184)),
+    Sphere(vec3(-2.75, .1, 3.5), .6, rgb(1, .572, .184)),
     CheckeredSphere(vec3(0,-99999.5, 0), 99999, rgb(.75, .75, .75), 0.25),
     ]
 
 r = float(w) / h
 # Screen coordinates: x0, y0, x1, y1.
-S = (-1., 1. / r + .25, 1., -1. / r + .25)
+S = (-1, 1 / r + .25, 1, -1 / r + .25)
 x = np.tile(np.linspace(S[0], S[2], w), h)
 y = np.repeat(np.linspace(S[1], S[3], h), w)
 
 t0 = time.time()
 Q = vec3(x, y, 0)
 color = raytrace(E, (Q - E).norm(), scene)
-print "Took", time.time() - t0
+print ("Took", time.time() - t0)
 
 rgb = [Image.fromarray((255 * np.clip(c, 0, 1).reshape((h, w))).astype(np.uint8), "L") for c in color.components()]
-Image.merge("RGB", rgb).save("fig.png")
+Image.merge("RGB", rgb).save("rt3.png")

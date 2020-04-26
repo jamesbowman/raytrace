@@ -1,3 +1,4 @@
+from PIL import Image
 import numpy as np
 
 w = 400
@@ -133,7 +134,7 @@ S = (-1., -1. / r + .25, 1., 1. / r + .25)
 # Loop through all pixels.
 for i, x in enumerate(np.linspace(S[0], S[2], w)):
     if i % 10 == 0:
-        print i / float(w) * 100, "%"
+        print(i / float(w) * 100, "%")
     for j, y in enumerate(np.linspace(S[1], S[3], h)):
         col[:] = 0
         Q[:2] = (x, y)
@@ -154,6 +155,5 @@ for i, x in enumerate(np.linspace(S[0], S[2], w)):
             reflection *= obj.get('reflection', 1.)
         img[h - j - 1, i, :] = np.clip(col, 0, 1)
 
-import Image
 im = Image.fromarray((255 * img).astype(np.uint8), "RGB")
 im.save("fig.png")
